@@ -1,0 +1,6 @@
+packages:
+  - api
+  - admin-zone
+  - component
+  - common
+
