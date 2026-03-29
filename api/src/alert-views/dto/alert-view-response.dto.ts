@@ -1,17 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateAlertViewDto {
+export class AlertViewResponseDto {
   @ApiProperty({
     example: '67e76af4f7ddf8acac620001',
   })
-  @IsMongoId()
   alertId!: string;
 
   @ApiProperty({
     example: 'user-42',
   })
-  @IsString()
-  @IsNotEmpty()
   userId!: string;
 }
