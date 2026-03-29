@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Updater Local Preview</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg-a: #fffaf0;
+        --bg-b: #eef6ff;
+        --ink: #14213d;
+        --muted: #4f5d75;
+        --line: rgba(20, 33, 61, 0.12);
+        --card: rgba(255, 255, 255, 0.86);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(255, 214, 165, 0.85), transparent 34%),
+          radial-gradient(circle at top right, rgba(147, 197, 253, 0.72), transparent 30%),
+          linear-gradient(180deg, var(--bg-a) 0%, var(--bg-b) 100%);
+      }
+
+      .layout {
+        display: grid;
+        gap: 1.5rem;
+        margin: 0 auto;
+        max-width: 1200px;
+        padding: 2rem 1rem 3rem;
+      }
+
+      .hero,
+      .panel,
+      .preview-card {
+        backdrop-filter: blur(10px);
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: 0 18px 40px rgba(20, 33, 61, 0.08);
+      }
+
+      .hero {
+        padding: 1.6rem;
+      }
+
+      .hero h1 {
+        font: 700 clamp(2rem, 5vw, 3.4rem)/1.02 Georgia, "Times New Roman", serif;
+        letter-spacing: -0.04em;
+        margin: 0 0 0.7rem;
+      }
+
+      .hero p {
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.6;
+        margin: 0;
+        max-width: 70ch;
+      }
+
+      .grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+      }
+
+      .panel {
+        padding: 1.2rem;
+      }
+
+      .panel h2,
+      .preview-card h2 {
+        font: 700 1.05rem/1.1 "Segoe UI", sans-serif;
+        letter-spacing: 0.02em;
+        margin: 0 0 1rem;
+      }
+
+      .field {
+        display: grid;
+        gap: 0.4rem;
+        margin-bottom: 0.95rem;
+      }
+
+      .field label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .field input {
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        color: var(--ink);
+        font: inherit;
+        padding: 0.8rem 0.9rem;
+      }
+
+      .actions,
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+      }
+
+      button,
+      a.link {
+        appearance: none;
+        background: var(--ink);
+        border: none;
+        border-radius: 999px;
+        color: #fff;
+        cursor: pointer;
+        font: 700 0.92rem/1 "Segoe UI", sans-serif;
+        padding: 0.8rem 1rem;
+        text-decoration: none;
+      }
+
+      button.secondary,
+      a.link.secondary {
+        background: rgba(20, 33, 61, 0.1);
+        color: var(--ink);
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin: 0.75rem 0 0;
+      }
+
+      .preview-stack {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .preview-card {
+        padding: 1.2rem;
+      }
+
+      .preview-card.popup-host {
+        min-height: 460px;
+      }
+
+      code {
+        background: rgba(20, 33, 61, 0.08);
+        border-radius: 8px;
+        padding: 0.15rem 0.4rem;
+      }
+
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <section class="hero">
+        <h1>Updater Browser Preview</h1>
+        <p>
+          This page loads the current local web component bundle from
+          <code>/components/component.es.js</code> and points it at the local Nest API.
+          Seed some alerts, pick a stream and user id, and you can test the banner and
+          popup behavior in the browser.
+        </p>
+      </section>
+
+      <section class="grid">
+        <aside class="panel">
+          <h2>Preview Controls</h2>
+
+          <div class="field">
+            <label for="api-url">API URL</label>
+            <input id="api-url" value="http://localhost:4000" />
+          </div>
+
+          <div class="field">
+            <label for="streams">Streams</label>
+            <input id="streams" value='["earth"]' />
+          </div>
+
+          <div class="field">
+            <label for="user-id">User ID</label>
+            <input id="user-id" value="preview-user-earth" />
+          </div>
+
+          <div class="actions">
+            <button id="apply-preview" type="button">Apply Preview Settings</button>
+            <button class="secondary" id="new-user" type="button">New User</button>
+          </div>
+
+          <div class="links" style="margin-top: 0.9rem">
+            <a class="link secondary" id="swagger-link" href="http://localhost:4000/docs" target="_blank" rel="noreferrer">
+              Open Swagger
+            </a>
+            <a class="link secondary" id="health-link" href="http://localhost:4000/health" target="_blank" rel="noreferrer">
+              Open Health
+            </a>
+          </div>
+
+          <p class="hint">
+            Recommended test flow:
+            1. Run <code>pnpm seed:demo</code>
+            2. Open this page
+            3. Try <code>["earth"]</code>, <code>["water"]</code>, or <code>["fire"]</code>
+            4. Change the user id to re-test popup unseen behavior
+          </p>
+        </aside>
+
+        <div class="preview-stack">
+          <section class="preview-card">
+            <h2>Banner</h2>
+            <updater-alert-banner
+              id="banner-preview"
+              api-url="http://localhost:4000"
+              streams='["earth"]'
+              poll-interval-ms="15000"
+            ></updater-alert-banner>
+          </section>
+
+          <section class="preview-card popup-host">
+            <h2>Pop Up</h2>
+            <updater-alert-pop-up
+              id="popup-preview"
+              api-url="http://localhost:4000"
+              user-id="preview-user-earth"
+              streams='["earth"]'
+              poll-interval-ms="15000"
+            ></updater-alert-pop-up>
+          </section>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="/components/component.es.js"></script>
+    <script>
+      const apiUrlInput = document.getElementById('api-url');
+      const streamsInput = document.getElementById('streams');
+      const userIdInput = document.getElementById('user-id');
+      const banner = document.getElementById('banner-preview');
+      const popup = document.getElementById('popup-preview');
+      const swaggerLink = document.getElementById('swagger-link');
+      const healthLink = document.getElementById('health-link');
+
+      function applyPreviewSettings() {
+        const apiUrl = apiUrlInput.value.trim() || 'http://localhost:4000';
+        const streams = streamsInput.value.trim() || '["earth"]';
+        const userId = userIdInput.value.trim() || `preview-user-${Date.now()}`;
+        const normalizedApiUrl = apiUrl.replace(/\/+$/, '');
+
+        banner.setAttribute('api-url', normalizedApiUrl);
+        banner.setAttribute('streams', streams);
+
+        popup.setAttribute('api-url', normalizedApiUrl);
+        popup.setAttribute('streams', streams);
+        popup.setAttribute('user-id', userId);
+
+        swaggerLink.href = `${normalizedApiUrl}/docs`;
+        healthLink.href = `${normalizedApiUrl}/health`;
+      }
+
+      document.getElementById('apply-preview').addEventListener('click', applyPreviewSettings);
+      document.getElementById('new-user').addEventListener('click', () => {
+        userIdInput.value = `preview-user-${Date.now()}`;
+        applyPreviewSettings();
+      });
+
+      applyPreviewSettings();
+    </script>
+  </body>
+</html>

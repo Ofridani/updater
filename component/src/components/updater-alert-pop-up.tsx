@@ -327,8 +327,8 @@ customElement(
                 }
               >
                 {(alertAccessor) => {
-                  const alert = alertAccessor();
-                  const theme = createMemo(() => resolveAlertTheme(alert));
+                  const alert = createMemo(() => alertAccessor());
+                  const theme = createMemo(() => resolveAlertTheme(alert()));
 
                   return (
                     <article
@@ -340,12 +340,12 @@ customElement(
                     >
                       <header class="header">
                         <div class="title-wrap">
-                          <span class="eyebrow">{getAlertEyebrow(alert)}</span>
-                          <h2 class="title">{alert.title}</h2>
+                          <span class="eyebrow">{getAlertEyebrow(alert())}</span>
+                          <h2 class="title">{alert().title}</h2>
                           <div class="badge-row">
-                            <span class="badge">{getAlertTypeLabel(alert.type)}</span>
-                            <Show when={alert.status}>
-                              <span class="badge">{alert.status}</span>
+                            <span class="badge">{getAlertTypeLabel(alert().type)}</span>
+                            <Show when={alert().status}>
+                              <span class="badge">{alert().status}</span>
                             </Show>
                           </div>
                         </div>
@@ -360,12 +360,12 @@ customElement(
                       </header>
 
                       <div class="copy">
-                        <p class="impact">{alert.impact}</p>
-                        <Show when={alert.description}>
-                          <p class="description">{alert.description}</p>
+                        <p class="impact">{alert().impact}</p>
+                        <Show when={alert().description}>
+                          <p class="description">{alert().description}</p>
                         </Show>
                         <span class="meta">
-                          Published {formatPublishDate(alert.publishDate)}
+                          Published {formatPublishDate(alert().publishDate)}
                         </span>
                       </div>
 

@@ -23,6 +23,10 @@ import { AlertsModule } from './alerts/alerts.module';
       rootPath: join(__dirname, '..', '..', 'component', 'dist'),
       serveRoot: '/components',
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/preview',
+    }),
     AlertsModule,
     AlertViewsModule,
   ],

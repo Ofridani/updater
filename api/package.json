@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "build": "nest build",
+    "seed:demo": "node ./scripts/seed-demo.mjs",
     "start": "node dist/main.js",
     "start:dev": "nest start --watch",
     "typecheck": "tsc -p tsconfig.json --noEmit"

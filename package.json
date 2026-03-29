@@ -8,10 +8,13 @@
     "typecheck": "pnpm -r typecheck",
     "dev:api": "pnpm --filter @updater/api start:dev",
     "dev:admin": "pnpm --filter @updater/admin-zone dev",
-    "dev:component": "pnpm --filter @updater/component build --watch"
+    "dev:component": "pnpm --filter @updater/component build --watch",
+    "dev:preview": "concurrently -k -n component,api -c cyan,green \"pnpm --filter @updater/component dev\" \"pnpm --filter @updater/api start:dev\"",
+    "seed:demo": "pnpm --filter @updater/api seed:demo"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
+    "concurrently": "^9.2.1",
     "typescript": "^5.9.3"
   }
 }

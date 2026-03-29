@@ -203,8 +203,8 @@ customElement(
           }
         >
           {(alertAccessor) => {
-            const alert = alertAccessor();
-            const theme = createMemo(() => resolveAlertTheme(alert));
+            const alert = createMemo(() => alertAccessor());
+            const theme = createMemo(() => resolveAlertTheme(alert()));
 
             return (
               <button
@@ -219,16 +219,16 @@ customElement(
                 <div class="banner-copy">
                   <span class="eyebrow">
                     {alerts().length > 1
-                      ? `${getAlertEyebrow(alert)} - click to cycle`
-                      : getAlertEyebrow(alert)}
+                      ? `${getAlertEyebrow(alert())} - click to cycle`
+                      : getAlertEyebrow(alert())}
                   </span>
-                  <strong class="title">{alert.title}</strong>
-                  <span class="impact">{alert.impact}</span>
-                  <Show when={alert.description}>
-                    <span class="description">{alert.description}</span>
+                  <strong class="title">{alert().title}</strong>
+                  <span class="impact">{alert().impact}</span>
+                  <Show when={alert().description}>
+                    <span class="description">{alert().description}</span>
                   </Show>
                   <span class="meta">
-                    Published {formatPublishDate(alert.publishDate)}
+                    Published {formatPublishDate(alert().publishDate)}
                   </span>
                 </div>
                 <div class="count">
