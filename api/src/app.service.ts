@@ -6,7 +6,7 @@ export class AppService {
     return {
       name: 'updater-api',
       status: 'ok',
+      componentBundle: '/components/component.es.js',
     };
   }
 }
-
